@@ -25,6 +25,7 @@ public class SferaMonitoring {
         checkEpicsWithWrongSystems();
         checkTicketsWithWrongSystems();
         checkTicketsWithWrongProject();
+        checkTicketsWithWrongTypes();
         checkTicketsWithBigEstimation();
         checkOverdueRDSs();
         checkNotOnBotovRDSs();
@@ -254,6 +255,19 @@ public class SferaMonitoring {
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L * 8 * 4);
+        }
+    }
+
+    private static void checkTicketsWithWrongTypes() throws IOException {
+        //задачи с неправильным типом
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup not in" +
+                " (\"Технический долг\", \"Новая функциональность\", \"Архитектурная задача\") and type!=\"defect\"";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("задачи с неправильным типом (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
     }
 

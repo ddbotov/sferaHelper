@@ -32,7 +32,7 @@ public class SferaHelperTicketTypesFixer {
 
     public static void main(String... args) throws IOException {
         SferaMonitoring.checkTicketsWithBigEstimation();//"4350", "4351", "4352", "4353", "4354", "4355", "4356"
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = '4350'";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = '4351'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         HashMap<TicketType, List<GetTicketDto>> fullTicketsMap = new HashMap<>();
