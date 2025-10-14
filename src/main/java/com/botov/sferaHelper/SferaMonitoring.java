@@ -19,6 +19,7 @@ public class SferaMonitoring {
     public static void main(String... args) throws IOException {
         checkProdBugs();
         checkClosedTicketsWithoutResolution();
+        checkTicketsDone();
         checkTicketsWithoutEpics();
         checkTicketsWithoutEstimation();
         checkTicketsWithoutSprint();
@@ -39,7 +40,7 @@ public class SferaMonitoring {
         checkStoriesWithoutAcceptanceCriteria();
         checkEpicsWithoutEstimation();
         checkEpicsWithoutAcceptanceCriteria();
-        checkEpicsWithoutOpenedChildren();
+        //checkEpicsWithoutOpenedChildren();
         //новые эпики на мне??
 
         //найти эпики без фичей
@@ -70,7 +71,7 @@ public class SferaMonitoring {
 
     private static void checkOnBotovNotMySystemRDSs() throws IOException {
         //РДСы не по 1553_1, 1553 или 1672_3 на Ботове
-        String query = "area=\"RDS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") ";
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
 
@@ -93,7 +94,7 @@ public class SferaMonitoring {
 
     private static void checkNotOnBotovRDSs() throws IOException {
         //РДСы по 1553_1, 1553 или 1672_3 не на Ботове
-        String query = "area=\"RDS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee not in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee not in (\"vtb70166052@corp.dev.vtb\") " +
                 "and (name ~ \"[1672_3]\" or name ~ \"[1553]\" or name ~ \"[1553_1]\") " +
                 "and (streamExecutor = 'Омниканальный мидл' or streamExecutor = 'Базовые сервисы' or streamExecutor='Омниканальные микросервисные решения' or streamConsumer = 'Омниканальный мидл' or streamConsumer = 'Базовые сервисы' or streamConsumer='Омниканальные микросервисные решения')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
@@ -113,7 +114,7 @@ public class SferaMonitoring {
 
     private static void checkYellowDeadlineRDSs() throws IOException {
         //"Пожелтевшие RDS" https://sfera.inno.local/knowledge/pages?id=1675408
-        String query = "area=\"RDS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
                 "and label in ('YELLOW_DEADLINE_ALERT') " +
                 " and (streamExecutor = 'Омниканальный мидл' or streamExecutor = 'Базовые сервисы' or streamExecutor='Омниканальные микросервисные решения' or streamConsumer = 'Омниканальный мидл' or streamConsumer = 'Базовые сервисы' or streamConsumer='Омниканальные микросервисные решения') ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
@@ -127,7 +128,7 @@ public class SferaMonitoring {
 
     private static void checkRedDeadlineRDSs() throws IOException {
         //"Покрасневшие RDS" https://sfera.inno.local/knowledge/pages?id=1675665
-        String query = "area=\"RDS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
                 "and label in ('RED_DEADLINE_MISSED') " +
                 " and (streamExecutor = 'Омниканальный мидл' or streamExecutor = 'Базовые сервисы' or streamExecutor='Омниканальные микросервисные решения' or streamConsumer = 'Омниканальный мидл' or streamConsumer = 'Базовые сервисы' or streamConsumer='Омниканальные микросервисные решения') ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
@@ -141,7 +142,7 @@ public class SferaMonitoring {
 
     private static void checkEpicsWithoutOpenedChildren() throws IOException {
         //эпики без декопозиции
-        String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
                 "and not hasOpenedChildren()";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -154,7 +155,7 @@ public class SferaMonitoring {
 
     private static void checkEpicsWithoutAcceptanceCriteria() throws IOException {
         //эпики без критериев приёмки
-        String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
                 "and (acceptanceCriteria=null or acceptanceCriteria='' or acceptanceCriteria='!' or acceptanceCriteria='-' or acceptanceCriteria=' ')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -167,7 +168,7 @@ public class SferaMonitoring {
 
     private static void checkEpicsWithoutEstimation() throws IOException {
         //эпики без оценок
-        String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
                 "and estimation = null";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -180,7 +181,7 @@ public class SferaMonitoring {
 
     private static void checkStoriesWithoutAcceptanceCriteria() throws IOException {
         //истории без критериев приёмки
-        String query = "type=\"story\" and area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') " +
+        String query = "type=\"story\" and area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') " +
                 "and (acceptanceCriteria=null or acceptanceCriteria='' or acceptanceCriteria='-' or acceptanceCriteria=' ')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -193,7 +194,7 @@ public class SferaMonitoring {
 
     private static void checkRDSWithOpenQuestions() throws IOException {
         //RDS с открытыми вопросами
-        String query = "area='RDS' and openQuestion = 'открытый вопрос'  and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
+        String query = "area='RDS' and openQuestion = 'открытый вопрос'  and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -228,7 +229,7 @@ public class SferaMonitoring {
     private static void checkOverdue(String area, String filter) throws IOException {
         //просроченные РДСы
         String dueDate = LocalDate.now().plusDays(60).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String query = "area='" + area + "' and status not in ('closed', 'done', 'rejectedByThePerformer') and " +
+        String query = "area='" + area + "' and status not in ('closed', 'rejectedByThePerformer') and " +
                 "((dueDate = null) or (dueDate < '"
                 + dueDate +
                 "'))";
@@ -260,7 +261,7 @@ public class SferaMonitoring {
 
     public static void checkTicketsWithBigEstimation() throws IOException {
         //задачи с трудооценкой, большей чем 4 ч.д.
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -273,7 +274,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithWrongTypes() throws IOException {
         //задачи с неправильным типом
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup not in" +
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and workGroup not in" +
                 " (\"Технический долг\", \"Новая функциональность\", \"Архитектурная задача\") and type!=\"defect\"";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -286,7 +287,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithWrongProject() throws IOException {
         //задачи с неправильным проектом (не 2973)
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and projectConsumer != 'f9696ccf-0f8d-431e-a803-9d00ee6e3329'";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != 'f9696ccf-0f8d-431e-a803-9d00ee6e3329'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -299,7 +300,7 @@ public class SferaMonitoring {
 
     private static void checkEpicsWithWrongSystems() throws IOException {
         //"Эпики" не по 1553 (особенно по 1672_3)
-        String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer')  and assignee in (\"vtb70166052@corp.dev.vtb\") and systems not in (\"1553 Заявки ФЛ\")";
+        String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer')  and assignee in (\"vtb70166052@corp.dev.vtb\") and systems not in (\"1553 Заявки ФЛ\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -312,7 +313,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithWrongSystems() throws IOException {
         //Задачи не по 1553 (особенно по 1672_3)
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems not in (\"1553 Заявки ФЛ\")";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and systems not in (\"1553 Заявки ФЛ\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -325,7 +326,7 @@ public class SferaMonitoring {
 
     public static void checkProdBugs() throws IOException {
         //дефекты прода
-        String query = "type=\"defect\" and area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
+        String query = "type=\"defect\" and area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer')";
         //String query = "type=\"defect\" and area=\"FRNRSA\" and createDate >= '2025-01-01' and systems != \"1672_3 Аутентификация подтверждение операций\"";
         //String query = "area=\"FRNRSA\" and number='FRNRSA-7274'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
@@ -345,9 +346,21 @@ public class SferaMonitoring {
         }
     }
 
+    private static void checkTicketsDone() throws IOException {
+        //задачи выполненные, но не закрытые
+        String query = "area=\"FRNRSA\" and status in ('done')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("задачи выполненные, но не закрытые (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+    }
+
     private static void checkTicketsWithoutEpics() throws IOException {
         //задачи без эпиков
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent = null";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and parent = null";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -359,7 +372,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithoutEstimation() throws IOException {
         //задачи без оценок
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation = null";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and estimation = null";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -372,7 +385,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithoutSprint() throws IOException {
         //задачи вне спринтов
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = null";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and sprint = null";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
