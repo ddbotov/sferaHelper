@@ -27,6 +27,7 @@ public class SferaMonitoring {
         checkTicketsWithWrongProject();
         checkTicketsWithWrongTypes();
         checkTicketsWithBigEstimation();
+        checkTicketsClosedWithoutResolution();
         checkOverdueRDSs();
         checkNotOnBotovRDSs();
         checkOnBotovNotMySystemRDSs();
@@ -204,7 +205,7 @@ public class SferaMonitoring {
 
     private static void checkRDSsStatus() throws IOException {
         //RDS не в статусe "В очереди"
-        String query = "area='RDS' and status not in ('closed', 'done', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
+        String query = "area='RDS' and status not in ('closed', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -242,6 +243,18 @@ public class SferaMonitoring {
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             SferaHelperMethods.setDueDate(ticket.getNumber(), newDueDate);
+        }
+    }
+
+    public static void checkTicketsClosedWithoutResolution() throws IOException {
+        //Закрытые задачи без резолюции
+        String query = "area=\"FRNRSA\" and status in ('closed') and resolution = null";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Закрытые задачи без резолюции (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
     }
 
