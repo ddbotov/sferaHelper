@@ -274,7 +274,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithWrongTypes() throws IOException {
         //задачи с неправильным типом
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and workGroup not in" +
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejected', 'rejectedByThePerformer') and workGroup not in" +
                 " (\"Технический долг\", \"Новая функциональность\", \"Архитектурная задача\") and type!=\"defect\"";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -385,7 +385,7 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithoutSprint() throws IOException {
         //задачи вне спринтов
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and sprint = null";
+        String query = "area=\"FRNRSA\" and status not in ('closed',  'rejected', 'rejectedByThePerformer') and sprint = null";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
