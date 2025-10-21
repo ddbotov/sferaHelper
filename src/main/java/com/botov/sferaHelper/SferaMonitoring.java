@@ -80,6 +80,7 @@ public class SferaMonitoring {
             if (!ticket.getName().startsWith("[1672_3]") &&
                     !ticket.getName().startsWith("[1553]") &&
                     !ticket.getName().startsWith("[1553_1]") &&
+                    !ticket.getNumber().equals("RDS-293663") &&
                     !ticket.getNumber().equals("RDS-272592")) {//консультация по постпроцессорной очереди
                 notMySystemRDSs.add(ticket);
             }
