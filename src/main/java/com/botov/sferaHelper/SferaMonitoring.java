@@ -24,7 +24,9 @@ public class SferaMonitoring {
         checkTicketsWithoutEstimation();
         checkTicketsWithoutSprint();
         checkEpicsWithWrongSystems();
+        checkEpicsWithEmptySystems();
         checkTicketsWithWrongSystems();
+        checkTicketsWithEmptySystems();
         checkTicketsWithWrongProject();
         checkTicketsWithWrongTypes();
         checkTicketsWithBigEstimation();
@@ -299,6 +301,19 @@ public class SferaMonitoring {
         }
     }
 
+    private static void checkEpicsWithEmptySystems() throws IOException {
+        //Эпики c пустым полем "Система"
+        String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer')  and assignee in (\"vtb70166052@corp.dev.vtb\") and systems = null";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Эпики c пустым полем \"Система\" (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+    }
+
     private static void checkEpicsWithWrongSystems() throws IOException {
         //"Эпики" не по 1553 (особенно по 1672_3)
         String query = "area=\"STROMS\" and status not in ('closed', 'rejectedByThePerformer')  and assignee in (\"vtb70166052@corp.dev.vtb\") and systems not in (\"1553 Заявки ФЛ\")";
@@ -306,6 +321,19 @@ public class SferaMonitoring {
 
         System.err.println();
         System.err.println("Эпики не по 1553 (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+    }
+
+    private static void checkTicketsWithEmptySystems() throws IOException {
+        //Задачи c пустыми полями "Система"
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and systems = null";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Задачи c пустыми полями \"Система\" (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
