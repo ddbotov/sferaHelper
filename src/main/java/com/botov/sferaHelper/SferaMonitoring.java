@@ -43,6 +43,9 @@ public class SferaMonitoring {
         checkEpicsWithoutEstimation();
         checkEpicsWithoutAcceptanceCriteria();
         //checkEpicsWithoutOpenedChildren();
+
+        //Выводить в конце итогое кол-во проблем?
+
         //новые эпики на мне??
 
         //найти эпики без фичей
