@@ -44,6 +44,7 @@ public class SferaMonitoring {
         checkStoriesWithoutAcceptanceCriteria();
         checkEpicsWithoutEstimation();
         checkEpicsWithoutAcceptanceCriteria();
+        checkMyDoneRDS();
         //checkEpicsWithoutOpenedChildren();
 
         //Выводить в конце итогое кол-во проблем?
@@ -62,6 +63,20 @@ public class SferaMonitoring {
         //выполненные задачи, но не закрытые
 
         System.err.println("Всего проблем найдено: " + errorsCount);
+    }
+
+    private static void checkMyDoneRDS() throws IOException {
+        //Созданные мной РДС-ы в статусе "Выполнено"
+
+        String query = "area=\"RDS\" and status in ('done') and owner in (\"vtb70166052@corp.dev.vtb\")";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Созданные мной РДС-ы в статусе \"Выполнено\" (кол-во " + listTicketsDto.getContent().size() + "):");
+        errorsCount += listTicketsDto.getContent().size();
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
     }
 
     private static void checkClosedTicketsWithoutResolution() throws IOException {
