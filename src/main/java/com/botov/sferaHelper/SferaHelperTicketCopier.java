@@ -12,7 +12,7 @@ import java.io.IOException;
 class SferaHelperTicketCopier {
 		public static void main(String... args) throws IOException {
 			String[] sprints = new String[] {"4356", "4357", "4358", "4359", "4360", "4361", "4362", "4363"};
-			String[] ticketNumbers = new String[] {"FRNRSA-7910", "FRNRSA-7918", "FRNRSA-7925", "FRNRSA-7932", "FRNRSA-7939", "FRNRSA-9418"};
+			String[] ticketNumbers = new String[] {"FRNRSA-9032"};
 
 			for (String ticketNumber : ticketNumbers) {
 				GetTicketDto ticket = SferaHelperMethods.ticketByNumber(ticketNumber);
