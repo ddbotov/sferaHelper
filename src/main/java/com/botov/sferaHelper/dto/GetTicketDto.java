@@ -3,6 +3,7 @@ package com.botov.sferaHelper.dto;
 import com.botov.sferaHelper.bo.TicketType;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.botov.sferaHelper.bo.TicketType.DEFECT;
@@ -21,6 +22,7 @@ public class GetTicketDto {
     private TypeDto type;
     private DetectionEnvironmentDto detectionEnvironment;
     private DetectionPhaseDto detectionPhase;
+    private List<ReliabilityPatternDto> reliabilityPattern;
 
     public boolean isTechDebtIB() {
         if (TicketType.getTicketType(this) == TECH_DEBT

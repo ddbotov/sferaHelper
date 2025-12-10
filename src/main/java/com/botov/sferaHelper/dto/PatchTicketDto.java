@@ -2,6 +2,7 @@ package com.botov.sferaHelper.dto;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,4 +20,5 @@ public class PatchTicketDto {
     private String archTaskReason; //like "Прочие архитектурные задачи"
     private String status; //like "onTheQueue"
     private String resolution; //like "Готово"
+    private Set<String> reliabilityPattern;
 }

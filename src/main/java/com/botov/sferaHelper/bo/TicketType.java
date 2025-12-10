@@ -3,6 +3,7 @@ package com.botov.sferaHelper.bo;
 import com.botov.sferaHelper.dto.GetTicketDto;
 import com.botov.sferaHelper.dto.PatchTicketDto;
 
+import java.util.Collections;
 import java.util.function.Supplier;
 
 public enum TicketType {
@@ -12,10 +13,17 @@ public enum TicketType {
         ticketDto.setTechDebtConsequence("Другое");
         return ticketDto;
     }),
-    ARH(true, () -> {
+    ARH_OTHER(true, () -> {
         PatchTicketDto ticketDto = new PatchTicketDto();
         ticketDto.setWorkGroup("Архитектурная задача");
         ticketDto.setArchTaskReason("Прочие архитектурные задачи");
+        return ticketDto;
+    }),
+    ARH_RELIABILITY(true, () -> {
+        PatchTicketDto ticketDto = new PatchTicketDto();
+        ticketDto.setWorkGroup("Архитектурная задача");
+        ticketDto.setArchTaskReason("Надежность и Производительность");//
+        ticketDto.setReliabilityPattern(Collections.singleton("НА.ПН.02 - Stand In"));
         return ticketDto;
     }),
     NEW_FUNC(true, () -> {
@@ -59,7 +67,12 @@ public enum TicketType {
             return TECH_DEBT;
         }
         if (ticket.getWorkGroup().getName().equals("Архитектурная задача")) {
-            return ARH;
+            if ((ticket.getReliabilityPattern() != null)
+                    && !ticket.getReliabilityPattern().isEmpty()
+                    && ("Надежность и Производительность".equals(ticket.getReliabilityPattern().get(0).getIdentifier()))) {
+                return ARH_RELIABILITY;
+            }
+            return ARH_OTHER;
         }
         if (ticket.getWorkGroup().getName().equals("Линейная деятельность")) {
             return LINEAR;
