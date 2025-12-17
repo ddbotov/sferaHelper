@@ -67,9 +67,8 @@ public enum TicketType {
             return TECH_DEBT;
         }
         if (ticket.getWorkGroup().getName().equals("Архитектурная задача")) {
-            if ((ticket.getReliabilityPattern() != null)
-                    && !ticket.getReliabilityPattern().isEmpty()
-                    && ("Надежность и Производительность".equals(ticket.getReliabilityPattern().get(0).getIdentifier()))) {
+            if ((ticket.getArchTaskReason() != null)
+                    && ("Надежность и Производительность".equals(ticket.getArchTaskReason().getIdentifier()))) {
                 return ARH_RELIABILITY;
             }
             return ARH_OTHER;

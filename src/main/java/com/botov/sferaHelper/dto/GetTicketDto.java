@@ -23,6 +23,7 @@ public class GetTicketDto {
     private DetectionEnvironmentDto detectionEnvironment;
     private DetectionPhaseDto detectionPhase;
     private List<ReliabilityPatternDto> reliabilityPattern;
+    private ArchTaskReasonDto archTaskReason;
 
     public boolean isTechDebtIB() {
         if (TicketType.getTicketType(this) == TECH_DEBT
