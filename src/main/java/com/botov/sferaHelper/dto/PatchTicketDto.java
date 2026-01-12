@@ -21,4 +21,5 @@ public class PatchTicketDto {
     private String status; //like "onTheQueue"
     private String resolution; //like "Готово"
     private Set<String> reliabilityPattern;
+    private String newFunctionalityReasons; // like "Долг клиентского опыта"
 }

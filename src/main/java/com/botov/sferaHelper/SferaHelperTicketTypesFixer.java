@@ -14,7 +14,8 @@ public class SferaHelperTicketTypesFixer {
 
     private static final HashMap<TicketType, Long> italonTicketTypesMap = new HashMap<>();
     static {
-        italonTicketTypesMap.put(TicketType.NEW_FUNC, 40l);
+        italonTicketTypesMap.put(TicketType.NEW_FUNC, 20l);
+        italonTicketTypesMap.put(TicketType.NEW_FUNC_CLIENT_EXP, 20l);
         italonTicketTypesMap.put(TicketType.TECH_DEBT, 30l);
         italonTicketTypesMap.put(TicketType.ARH_OTHER, 10l);
         italonTicketTypesMap.put(TicketType.ARH_RELIABILITY, 10l);
@@ -33,7 +34,7 @@ public class SferaHelperTicketTypesFixer {
 
     public static void main(String... args) throws IOException {
         SferaMonitoring.checkTicketsWithBigEstimation();//"4350", "4351", "4352", "4353", "4354", "4355", "4356"
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = '4357'";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = '4364'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         HashMap<TicketType, List<GetTicketDto>> fullTicketsMap = new HashMap<>();

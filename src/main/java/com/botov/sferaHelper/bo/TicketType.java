@@ -28,8 +28,23 @@ public enum TicketType {
     }),
     NEW_FUNC(true, () -> {
         PatchTicketDto ticketDto = new PatchTicketDto();
+        ticketDto.setNewFunctionalityReasons("");
         ticketDto.setWorkGroup("Новая функциональность");
         return ticketDto;
+    }),
+    NEW_FUNC_CLIENT_EXP(true, () -> {
+        PatchTicketDto ticketDto = new PatchTicketDto();
+        ticketDto.setWorkGroup("Новая функциональность");
+        ticketDto.setNewFunctionalityReasons("Долг клиентского опыта");
+        return ticketDto;
+        // PATCH https://sfera.inno.local/app/tasks/api/v1/entities/FRNRSA-10321
+        // {newFunctionalityReasons: "Долг клиентского опыта"}
+        //    "newFunctionalityReasons": {
+        //        "identifier": "Долг клиентского опыта",
+        //        "name": "Долг клиентского опыта",
+        //        "viewText": "Долг клиентского опыта",
+        //        "viewVariant": "avatar"
+        //    },
     }),
     DEFECT(false, () -> {
         throw new RuntimeException("DEFECT is not for patch");
@@ -61,6 +76,10 @@ public enum TicketType {
             return DEFECT;
         }
         if (ticket.getWorkGroup().getName().equals("Новая функциональность")) {
+            if ((ticket.getNewFunctionalityReasons() != null)
+                    && ("Долг клиентского опыта".equals(ticket.getNewFunctionalityReasons().getIdentifier()))) {
+                return NEW_FUNC_CLIENT_EXP;
+            }
             return NEW_FUNC;
         }
         if (ticket.getWorkGroup().getName().equals("Технический долг")) {
