@@ -12,7 +12,7 @@ class SferaHelperApplication {
 			//String query = "area='RDS'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent=null";
-			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5076'";
+			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5471'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1553 Заявки ФЛ\"";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1672_3 Аутентификация подтверждение операций\"";
 			//String query = "area=\"FRNRSA\" and systems = \"1672_3 Аутентификация подтверждение операций\"";
@@ -28,7 +28,7 @@ class SferaHelperApplication {
 			//String query = "number= 'FRNRSA-9740'";
 
 			//String query = "area=\"FRNRSA\" and sprint = '4357'";
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
+			//String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\")";
 			//4357
 
 			String sprint = "4358";
@@ -45,11 +45,11 @@ class SferaHelperApplication {
 
 
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1672_3 Аутентификация подтверждение операций");
-				//SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-5471");
+				SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-5470");
 				//SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L);
 				//SferaHelperMethods.setDueDate(ticket.getNumber(), "2026-04-07");
 				//SferaHelperMethods.setProject(ticket.getNumber(), "f9696ccf-0f8d-431e-a803-9d00ee6e3329");// проект 2973
-				SferaHelperMethods.setProject(ticket.getNumber(), "cfc821c2-189a-45ff-9ff6-1d5b43a99cf5");// проект 3491 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
+				//SferaHelperMethods.setProject(ticket.getNumber(), "4b4c6fcc-7125-41ca-a014-02014a5c800c");// проект 3556 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
 				//if (ticket.getSystems() != null && !ticket.getSystems().isEmpty() && !ticket.getSystems().contains("1553 Заявки ФЛ")) {
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");

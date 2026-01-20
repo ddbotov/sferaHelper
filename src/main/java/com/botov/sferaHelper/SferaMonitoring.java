@@ -328,11 +328,11 @@ public class SferaMonitoring {
 
     private static void checkTicketsWithWrongProject() throws IOException {
         //задачи с неправильным проектом (не 2973)
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != 'cfc821c2-189a-45ff-9ff6-1d5b43a99cf5'";
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("задачи с неправильным проектом (не 3491) (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("задачи с неправильным проектом (не 3556) (кол-во " + listTicketsDto.getContent().size() + "):");
         errorsCount += listTicketsDto.getContent().size();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             //SferaHelperMethods.setProject(ticket.getNumber(), "f9696ccf-0f8d-431e-a803-9d00ee6e3329");// проект 2973
