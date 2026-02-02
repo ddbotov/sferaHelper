@@ -129,7 +129,10 @@ public class SferaMonitoring {
 
         List<ListTicketShortDto> notMyRDSs = new ArrayList<>();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
-            if (!ticket.getNumber().equals("RDS-313296")) {//консультация по постпроцессорной очереди
+            if (!ticket.getNumber().equals("RDS-313296") //консультация по постпроцессорной очереди
+                    && !ticket.getNumber().equals("RDS-343776")   // РДС от Гузева на Базова про пайплайн
+                    && !ticket.getNumber().equals("RDS-343447")   // Неправильно заведённый РДС у зарплатных карт
+                ){
                 notMyRDSs.add(ticket);
             }
         }
