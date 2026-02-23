@@ -27,11 +27,6 @@ public class SferaSprintCloser {
             SferaHelperMethods.close(ticket.getNumber());
         }
 
-        //Получить список тикетов не в статусе CLOSED - должно быть 0
-        listTicketsDto = SferaHelperMethods.listTicketsByQuery(notClosedTicketsInActiveSprintQuery);
-        System.err.println();
-        System.err.println("Кол-во задач не в статусе \"Закрыто\":" + listTicketsDto.getContent().size());
-
         //Получить список тикетов без резолюций - должно быть 0. У кого нет - проставить резолюцию
         String ticketsWithoutResolutionInActiveSprintQuery = "area=\"FRNRSA\" and resolution = null and sprint=" + sprint;
         listTicketsDto = SferaHelperMethods.listTicketsByQuery(ticketsWithoutResolutionInActiveSprintQuery);
@@ -45,5 +40,10 @@ public class SferaSprintCloser {
             System.err.println();
             System.err.println("Кол-во задач без резолюции:" + listTicketsDto.getContent().size());
         }
+
+        //Получить список тикетов не в статусе CLOSED - должно быть 0
+        listTicketsDto = SferaHelperMethods.listTicketsByQuery(notClosedTicketsInActiveSprintQuery);
+        System.err.println();
+        System.err.println("Кол-во задач не в статусе \"Закрыто\":" + listTicketsDto.getContent().size());
     }
 }
