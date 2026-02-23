@@ -93,6 +93,14 @@ public class SferaHelperMethods {
         }
     }
 
+    public static void close(String number) throws IOException {
+        //Из "Создано","в работе" {resolution: "Готово", status: "closed"}
+        PatchTicketDto ticketDto = new PatchTicketDto();
+        ticketDto.setStatus("closed");
+        ticketDto.setResolution("Готово");
+        patchTicket2(number, ticketDto);
+    }
+
     public static void setStatus(String number, String status) throws IOException {
         PatchTicketDto ticketDto = new PatchTicketDto();
         ticketDto.setStatus(status);
@@ -100,11 +108,19 @@ public class SferaHelperMethods {
     }
 
     public static TicketCopyResponseDto copyTicket(GetTicketDto ticket) throws IOException {
-        System.out.println("copy " + ticket.getNumber());
+        return copyTicket(ticket.getNumber(), ticket.getName());
+    }
+
+    public static TicketCopyResponseDto copyTicket(ListTicketShortDto ticket) throws IOException {
+        return copyTicket(ticket.getNumber(), ticket.getName());
+    }
+
+    private static TicketCopyResponseDto copyTicket(String number, String name) throws IOException {
+        System.out.println("copy " + number);
         TicketCopyRequestDto request = new TicketCopyRequestDto();
-        request.setEntity(ticket.getNumber());
+        request.setEntity(number);
         request.setOverride(new OverrideDto());
-        request.getOverride().setName(ticket.getName());
+        request.getOverride().setName(name);
         var response = SferaService.INSTANCE.copyTicket(request).execute();
         System.out.println("response=" + response);
         System.out.println("response.body()=" + response.body());
@@ -116,4 +132,5 @@ public class SferaHelperMethods {
         ticketDto.setResolution(resolution);
         patchTicket2(number, ticketDto);
     }
+
 }

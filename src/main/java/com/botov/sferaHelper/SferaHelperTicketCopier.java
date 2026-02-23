@@ -11,8 +11,8 @@ import java.io.IOException;
 //копирует одинаковые задачи в несколько спринтов sprints
 class SferaHelperTicketCopier {
 		public static void main(String... args) throws IOException {
-			String[] sprints = new String[] {"4359", "4360", "4361", "4362", "4363", "4364"};
-			String[] ticketNumbers = new String[] {"FRNRSA-10321", "FRNRSA-10320"};
+			String[] sprints = new String[] {"4364", "4365", "4366", "4367", "4368", "4369"};
+			String[] ticketNumbers = new String[] {"FRNRSA-9481", "FRNRSA-9488", "FRNRSA-9495", "FRNRSA-9502", "FRNRSA-9509", "FRNRSA-9516"};
 
 			for (String ticketNumber : ticketNumbers) {
 				GetTicketDto ticket = SferaHelperMethods.ticketByNumber(ticketNumber);
