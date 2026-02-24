@@ -22,7 +22,8 @@ public class SferaSprintCloser {
             TicketCopyResponseDto ticketCopy = SferaHelperMethods.copyTicket(ticket);
             SferaHelperMethods.setSprint(ticketCopy.getNumber(), nextSprint);
             SferaHelperMethods.setEstimation(ticketCopy.getNumber(), ticket.getEstimation());
-            System.err.println("Ticket '" + ticket.getName() + "' created in sprint " + nextSprint);
+            System.err.println("Ticket " + ticketCopy.getNumber() +
+                    " '" + ticket.getName() + "' created in sprint " + nextSprint);
 
             SferaHelperMethods.close(ticket.getNumber());
         }
