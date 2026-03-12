@@ -1,8 +1,10 @@
 package com.botov.sferaHelper;
 
+import com.botov.sferaHelper.bo.TicketType;
 import com.botov.sferaHelper.dto.GetTicketDto;
 import com.botov.sferaHelper.dto.ListTicketShortDto;
 import com.botov.sferaHelper.dto.ListTicketsDto;
+import com.botov.sferaHelper.dto.TicketCopyResponseDto;
 import com.botov.sferaHelper.service.SferaHelperMethods;
 
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //мониторит корректность задач, по возможности простые проблемы исправляет сам
 public class SferaMonitoring {
@@ -45,6 +48,9 @@ public class SferaMonitoring {
         checkEpicsWithoutEstimation();
         checkEpicsWithoutAcceptanceCriteria();
         checkMyDoneRDS();
+
+        checkOldTechDept();
+
         //checkEpicsWithoutOpenedChildren();
 
         //Выводить в конце итогое кол-во проблем?
@@ -65,6 +71,39 @@ public class SferaMonitoring {
 
 
         System.err.println("Всего проблем найдено: " + errorsCount);
+    }
+
+    //Не должно быть тех. долгов старше 3-х месяцев, это мониторит Седа (Критерии соответствия степени исполнения процессов производства и сопровождения техн. продуктов)
+    private static void checkOldTechDept() throws IOException {
+        String minCreateDate = LocalDate.now().minusDays(90).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup=\"Технический долг\" " +
+                "and type='task' and hasPlannedSprint() " +
+                "and createDate < '" + minCreateDate + "'";
+        List<ListTicketShortDto> content = SferaHelperMethods.listTicketsByQuery(query).getContent();
+        // тех. долги по Арх сертам переоткрывать нельзя, на них ссылки идут из Сфера конфигурации
+        content = content.stream().filter(o -> !o.getName().contains("Арх серт")).collect(Collectors.toList());
+
+        System.err.println();
+        System.err.println("Тех. долгов старше 3-х месяцев (кол-во " + content.size() + "):");
+        errorsCount += content.size();
+        for (ListTicketShortDto ticket: content) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            GetTicketDto ticketDto = SferaHelperMethods.ticketByNumber(ticket.getNumber());
+
+            if (ticketDto.isTechDebtIB()) {//тех. долг ИБ переоткрывать нельзя
+                continue;
+            }
+
+            //Copy ticket
+            TicketCopyResponseDto ticketCopy = SferaHelperMethods.copyTicket(ticket);
+            SferaHelperMethods.setEstimation(ticketCopy.getNumber(), ticket.getEstimation());
+            SferaHelperMethods.setTicketType(ticketCopy.getNumber(), TicketType.TECH_DEBT);
+            System.err.println("Ticket " + ticketCopy.getNumber() + " '" + ticket.getName() + "' created");
+            SferaHelperMethods.setTicketType(ticketCopy.getNumber(), TicketType.TECH_DEBT);
+            SferaHelperMethods.setSprint(ticket.getNumber(), null);
+            SferaHelperMethods.close(ticket.getNumber());
+        }
     }
 
     private static void checkMyDoneRDS() throws IOException {
