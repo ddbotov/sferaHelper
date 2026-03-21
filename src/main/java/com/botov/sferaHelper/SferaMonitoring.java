@@ -74,8 +74,9 @@ public class SferaMonitoring {
     }
 
     //Не должно быть тех. долгов старше 3-х месяцев, это мониторит Седа (Критерии соответствия степени исполнения процессов производства и сопровождения техн. продуктов)
+    // 75 дней - с запасом
     private static void checkOldTechDept() throws IOException {
-        String minCreateDate = LocalDate.now().minusDays(90).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String minCreateDate = LocalDate.now().minusDays(75).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup=\"Технический долг\" " +
                 "and type='task' and hasPlannedSprint() " +
@@ -85,7 +86,7 @@ public class SferaMonitoring {
         content = content.stream().filter(o -> !o.getName().contains("Арх серт")).collect(Collectors.toList());
 
         System.err.println();
-        System.err.println("Тех. долгов старше 3-х месяцев (кол-во " + content.size() + "):");
+        System.err.println("Тех. долгов старше 3-х месяцев (75 дней - запас) (кол-во " + content.size() + "):");
         errorsCount += content.size();
         for (ListTicketShortDto ticket: content) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
