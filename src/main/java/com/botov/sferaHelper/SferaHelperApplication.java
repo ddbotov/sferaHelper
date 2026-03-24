@@ -9,10 +9,10 @@ import java.util.Collections;
 //делает произвольные простые изменения в Сфере
 class SferaHelperApplication {
 		public static void main(String... args) throws IOException {
-			//String query = "area='RDS'";
+			String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent=null";
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5472'";
+			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-4487'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1553 Заявки ФЛ\"";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1672_3 Аутентификация подтверждение операций\"";
 			//String query = "area=\"FRNRSA\" and systems = \"1672_3 Аутентификация подтверждение операций\"";
@@ -45,11 +45,11 @@ class SferaHelperApplication {
 
 
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1672_3 Аутентификация подтверждение операций");
-				SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-5470");
+				//SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-5885");
 				//SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L);
 				//SferaHelperMethods.setDueDate(ticket.getNumber(), "2026-04-07");
 				//SferaHelperMethods.setProject(ticket.getNumber(), "f9696ccf-0f8d-431e-a803-9d00ee6e3329");// проект 2973
-				//SferaHelperMethods.setProject(ticket.getNumber(), "4b4c6fcc-7125-41ca-a014-02014a5c800c");// проект 3556 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
+				SferaHelperMethods.setProject(ticket.getNumber(), "4b4c6fcc-7125-41ca-a014-02014a5c800c");// проект 3556 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
 				//if (ticket.getSystems() != null && !ticket.getSystems().isEmpty() && !ticket.getSystems().contains("1553 Заявки ФЛ")) {
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");

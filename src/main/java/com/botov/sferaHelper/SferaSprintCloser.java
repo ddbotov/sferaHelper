@@ -1,5 +1,6 @@
 package com.botov.sferaHelper;
 
+import com.botov.sferaHelper.bo.TicketType;
 import com.botov.sferaHelper.dto.ListTicketShortDto;
 import com.botov.sferaHelper.dto.ListTicketsDto;
 import com.botov.sferaHelper.dto.TicketCopyResponseDto;
@@ -7,8 +8,8 @@ import com.botov.sferaHelper.service.SferaHelperMethods;
 
 public class SferaSprintCloser {
 
-    public static String sprint = "4361";
-    public static String nextSprint = "4362";
+    public static String sprint = "4362";
+    public static String nextSprint = "4363";
 
     public static void main(String... args) throws Exception {
         //Получить список тикетов не в статусе CLOSED
@@ -22,6 +23,7 @@ public class SferaSprintCloser {
             TicketCopyResponseDto ticketCopy = SferaHelperMethods.copyTicket(ticket);
             SferaHelperMethods.setSprint(ticketCopy.getNumber(), nextSprint);
             SferaHelperMethods.setEstimation(ticketCopy.getNumber(), ticket.getEstimation());
+            SferaHelperMethods.setTicketType(ticketCopy.getNumber(), TicketType.TECH_DEBT);
             System.err.println("Ticket " + ticketCopy.getNumber() +
                     " '" + ticket.getName() + "' created in sprint " + nextSprint);
 
