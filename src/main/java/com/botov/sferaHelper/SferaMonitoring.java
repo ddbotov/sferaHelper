@@ -171,6 +171,8 @@ public class SferaMonitoring {
             if (!ticket.getNumber().equals("RDS-313296") //консультация по постпроцессорной очереди
                     && !ticket.getNumber().equals("RDS-343776")   // РДС от Гузева на Базова про пайплайн
                     && !ticket.getNumber().equals("RDS-343447")   // Неправильно заведённый РДС у зарплатных карт
+                    && !ticket.getNumber().equals("RDS-351096")   // наш РДС на 2079
+                    && !ticket.getNumber().equals("RDS-347480")   // РДС на 2143
                 ){
                 notMyRDSs.add(ticket);
             }
@@ -341,12 +343,12 @@ public class SferaMonitoring {
     }
 
     public static void checkTicketsWithBigEstimation() throws IOException {
-        //задачи с трудооценкой, большей чем 4 ч.д.
-        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
+        //задачи с трудооценкой, большей чем 3 ч.д.
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 3) ;
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("задачи с трудооценкой, большей чем 4 ч.д. (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("задачи с трудооценкой, большей чем 3 ч.д. (кол-во " + listTicketsDto.getContent().size() + "):");
         errorsCount += listTicketsDto.getContent().size();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
