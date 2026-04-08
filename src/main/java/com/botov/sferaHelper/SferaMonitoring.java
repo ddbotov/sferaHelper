@@ -352,7 +352,7 @@ public class SferaMonitoring {
         errorsCount += listTicketsDto.getContent().size();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
-            SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L * 8 * 4);
+            SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L * 8 * 3);
         }
     }
 

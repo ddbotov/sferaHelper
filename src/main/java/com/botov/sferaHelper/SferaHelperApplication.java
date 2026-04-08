@@ -1,5 +1,6 @@
 package com.botov.sferaHelper;
 
+import com.botov.sferaHelper.bo.TicketType;
 import com.botov.sferaHelper.dto.*;
 import com.botov.sferaHelper.service.SferaHelperMethods;
 
@@ -31,7 +32,7 @@ class SferaHelperApplication {
 			//String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\")";
 			//4357
 
-			String sprint = "4358";
+			//String sprint = "4358";
 
 			ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 			for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
@@ -49,7 +50,7 @@ class SferaHelperApplication {
 				//SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L);
 				//SferaHelperMethods.setDueDate(ticket.getNumber(), "2026-04-07");
 				//SferaHelperMethods.setProject(ticket.getNumber(), "f9696ccf-0f8d-431e-a803-9d00ee6e3329");// проект 2973
-				SferaHelperMethods.setProject(ticket.getNumber(), "4b4c6fcc-7125-41ca-a014-02014a5c800c");// проект 3556 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
+				//SferaHelperMethods.setProject(ticket.getNumber(), "4b4c6fcc-7125-41ca-a014-02014a5c800c");// проект 3556 // проект 2971 895c11de-b178-4fe8-9977-75f527ce29a1 // db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b 2974
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
 				//if (ticket.getSystems() != null && !ticket.getSystems().isEmpty() && !ticket.getSystems().contains("1553 Заявки ФЛ")) {
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1553 Заявки ФЛ");
@@ -63,6 +64,13 @@ class SferaHelperApplication {
 				patch.setArchTaskReason("Надежность и Производительность");//
 				patch.setReliabilityPattern(Collections.singleton("НА.ПН.02 - Stand In"));
 				SferaHelperMethods.patchTicket2(ticket.getNumber(), patch);*/
+
+
+				SferaHelperMethods.setSprint(ticket.getNumber(), null);
+				PatchTicketDto ticketDto = new PatchTicketDto();
+				ticketDto.setStatus("closed");
+				ticketDto.setResolution("Готово");
+				SferaHelperMethods.patchTicket2(ticket.getNumber(), ticketDto);
 			}
 			System.out.println("end");
 		}
