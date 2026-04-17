@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.botov.sferaHelper.service.SferaService.SFERA_TICKET_START_PATH;
+
 //мониторит корректность задач, по возможности простые проблемы исправляет сам
 public class SferaMonitoring {
-
-    public static final String SFERA_TICKET_START_PATH = "https://sfera.inno.local/tasks/task/";
 
     public static int errorsCount = 0;
 
@@ -69,6 +69,7 @@ public class SferaMonitoring {
 
         //выполненные задачи, но не закрытые
 
+        //удалить связи "склонирована" у всех тикетов, эпиков и фичей ???
 
         System.err.println("Всего проблем найдено: " + errorsCount);
     }

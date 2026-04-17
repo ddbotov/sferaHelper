@@ -25,6 +25,7 @@ public class GetTicketDto {
     private List<ReliabilityPatternDto> reliabilityPattern;
     private ArchTaskReasonDto archTaskReason;
     private NewFunctionalityReasonsDto newFunctionalityReasons;
+    private List<RelationDto> relations;
 
     public boolean isTechDebtIB() {
         if (TicketType.getTicketType(this) == TECH_DEBT

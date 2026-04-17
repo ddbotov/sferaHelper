@@ -10,12 +10,15 @@ import java.util.List;
 
 public interface SferaService {
 
+    public static final String SFERA_BASE_URL = "https://sfera.inno.local/";
+    public static final String SFERA_TICKET_START_PATH = SFERA_BASE_URL + "tasks/task/";
+
     SferaService INSTANCE = createSferaService();
 
     private static SferaService createSferaService() {
         var client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://sfera.inno.local/")
+                .baseUrl(SFERA_BASE_URL)
                 .addConverterFactory(
                         GsonConverterFactory.create()
                 )
