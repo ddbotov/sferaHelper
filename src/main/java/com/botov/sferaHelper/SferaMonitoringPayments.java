@@ -7,8 +7,9 @@ import com.botov.sferaHelper.dto.RelationDto;
 import com.botov.sferaHelper.service.SferaHelperMethods;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.botov.sferaHelper.service.SferaService.SFERA_TICKET_START_PATH;
@@ -20,11 +21,30 @@ public class SferaMonitoringPayments {
     public static void main(String... args) throws IOException {
         checkRDSLabels();
         checkRDSPayments();
+        checkRDSsStatus();
+        checkOverdueRDSs();
+        printPaymentRDSs();
+
         // Проверить, что у фичи есть трудооценка?
         // глазами смотрим все эпики, фичи и РДС-ы - где есть косяки?
         // смотрим КЗ и дашборд по КЗ
 
         System.err.println("Всего проблем найдено: " + errorsCount);
+    }
+
+    private static void printPaymentRDSs() throws IOException {
+        //РДС-ы лейбла 'PAYMENT'
+
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PAYMENT')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("РДС-ы лейбла 'PAYMENT' (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
     }
 
     private static void checkRDSLabels() throws IOException {
@@ -40,6 +60,7 @@ public class SferaMonitoringPayments {
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
+        System.err.println();
     }
 
     private static void checkRDSPayments() throws IOException {
@@ -75,6 +96,49 @@ public class SferaMonitoringPayments {
         for (GetTicketDto ticket: rdsWithoutFeatures) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
+        System.err.println();
+    }
+
+    private static void checkRDSsStatus() throws IOException {
+        //RDS не в статусe "В очереди"
+        String query = "area='RDS' and status not in ('closed', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("RDS не в статусe \"В очереди\" (кол-во " + listTicketsDto.getContent().size() + "):");
+        errorsCount += listTicketsDto.getContent().size();
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            SferaHelperMethods.setStatus(ticket.getNumber(), "onTheQueue");
+        }
+        System.err.println();
+    }
+
+    private static void checkOverdueRDSs() throws IOException {
+        checkOverdue("RDS", "assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")");
+    }
+
+    private static void checkOverdue(String area, String filter) throws IOException {
+        //просроченные РДСы
+        String dueDate = LocalDate.now().plusDays(60).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String query = "area='" + area + "' and status not in ('closed', 'rejectedByThePerformer') and " +
+                "((dueDate = null) or (dueDate < '"
+                + dueDate +
+                "'))";
+        if (filter != null) {
+            query = query + " and " + filter;
+        }
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("просроченные " + area + " (кол-во " + listTicketsDto.getContent().size() + "):");
+        errorsCount += listTicketsDto.getContent().size();
+        String newDueDate = LocalDate.now().plusDays(60).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            SferaHelperMethods.setDueDate(ticket.getNumber(), newDueDate);
+        }
+        System.err.println();
     }
 
 }
