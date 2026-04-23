@@ -28,7 +28,7 @@ public interface SferaService {
         return retrofit.create(SferaService.class);
     }
 
-    @GET("app/tasks/api/v0.1/entities")
+    @GET("app/tasks/api/v0.1/entities" )
     Call<ListTicketsDto> listTicketsByQuery(@Query("query") String query, @Query("size") int size, @Query("page") int page);
 
     @PATCH("app/tasks/api/v0.1/entities/{number}")

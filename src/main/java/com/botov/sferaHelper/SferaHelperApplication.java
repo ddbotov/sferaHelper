@@ -10,7 +10,7 @@ import java.util.Collections;
 //делает произвольные простые изменения в Сфере
 class SferaHelperApplication {
 		public static void main(String... args) throws IOException {
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
+			//String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent=null";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-4487'";
@@ -26,7 +26,7 @@ class SferaHelperApplication {
 			//String query = "area=\"EKA\" and status not in ('closed') and sprint in (4350,4351,4352,4353,4354,4355) and projectConsumer='db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = null";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
-			//String query = "number= 'FRNRSA-9740'";
+			String query = "number= 'FRNRSA-8766'";
 
 			//String query = "area=\"FRNRSA\" and sprint = '4357'";
 			//String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\")";
@@ -66,11 +66,14 @@ class SferaHelperApplication {
 				SferaHelperMethods.patchTicket2(ticket.getNumber(), patch);*/
 
 
-				SferaHelperMethods.setSprint(ticket.getNumber(), null);
+/*				SferaHelperMethods.setSprint(ticket.getNumber(), null);
 				PatchTicketDto ticketDto = new PatchTicketDto();
 				ticketDto.setStatus("closed");
 				ticketDto.setResolution("Готово");
-				SferaHelperMethods.patchTicket2(ticket.getNumber(), ticketDto);
+				SferaHelperMethods.patchTicket2(ticket.getNumber(), ticketDto);*/
+
+
+				SferaHelperMethods.close(ticket);
 			}
 			System.out.println("end");
 		}

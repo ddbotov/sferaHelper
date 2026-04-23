@@ -93,12 +93,17 @@ public class SferaHelperMethods {
         }
     }
 
-    public static void close(String number) throws IOException {
+    public static void close(ListTicketShortDto ticket) throws IOException {
+        if ("waiting".equals(ticket.getStatus())) {
+            PatchTicketDto ticketDto = new PatchTicketDto();
+            ticketDto.setStatus("inProgress");
+            patchTicket2(ticket.getNumber(), ticketDto);
+        }
         //Из "Создано","в работе" {resolution: "Готово", status: "closed"}
         PatchTicketDto ticketDto = new PatchTicketDto();
         ticketDto.setStatus("closed");
         ticketDto.setResolution("Готово");
-        patchTicket2(number, ticketDto);
+        patchTicket2(ticket.getNumber(), ticketDto);
     }
 
     public static void setStatus(String number, String status) throws IOException {

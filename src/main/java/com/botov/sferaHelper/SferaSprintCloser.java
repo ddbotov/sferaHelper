@@ -27,7 +27,7 @@ public class SferaSprintCloser {
             System.err.println("Ticket " + ticketCopy.getNumber() +
                     " '" + ticket.getName() + "' created in sprint " + nextSprint);
 
-            SferaHelperMethods.close(ticket.getNumber());
+            SferaHelperMethods.close(ticket);
         }
 
         //Получить список тикетов без резолюций - должно быть 0. У кого нет - проставить резолюцию

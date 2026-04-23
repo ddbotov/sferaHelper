@@ -15,4 +15,5 @@ public class ListTicketShortDto {
     private String dueDate;//like "2024-12-28"
     private String techDebtConsequence; //like "Другое"
     private String workGroup; //like "Технический долг"
+    private String status;//like "created"
 }
