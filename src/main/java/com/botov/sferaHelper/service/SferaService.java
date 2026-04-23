@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface SferaService {
 
-    public static final String SFERA_BASE_URL = "https://sfera.inno.local/";
-    public static final String SFERA_TICKET_START_PATH = SFERA_BASE_URL + "tasks/task/";
+    String SFERA_BASE_URL = "https://sfera.inno.local/";
+    String SFERA_TICKET_START_PATH = SFERA_BASE_URL + "tasks/task/";
 
     SferaService INSTANCE = createSferaService();
 
@@ -28,10 +28,10 @@ public interface SferaService {
         return retrofit.create(SferaService.class);
     }
 
-    @GET("app/tasks/api/v0.1/entities" )
+    @GET("app/tasks/api/v1/entities" )
     Call<ListTicketsDto> listTicketsByQuery(@Query("query") String query, @Query("size") int size, @Query("page") int page);
 
-    @PATCH("app/tasks/api/v0.1/entities/{number}")
+    @PATCH("app/tasks/api/v1/entities/{number}")
     Call<Void> patchTicket(@Path("number") String number, @Body PatchTicketDto estimation);
 
     @PATCH("app/tasks/api/v1/entities/{number}")

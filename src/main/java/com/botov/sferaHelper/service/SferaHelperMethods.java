@@ -20,8 +20,10 @@ public class SferaHelperMethods {
             response = SferaService.INSTANCE.listTicketsByQuery(query, 1000, page++).execute();
             System.out.println("response=" + response);
             System.out.println("body=" + body);
-            body.getContent().addAll(response.body().getContent());
-            body.setTotalElements(response.body().getTotalElements());
+            if (response.body().getContent() != null) {
+                body.getContent().addAll(response.body().getContent());
+                body.setTotalElements(response.body().getTotalElements());
+            }
         } while (response.body().getTotalElements().intValue() > body.getContent().size());
         return body;
     }

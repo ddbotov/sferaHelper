@@ -103,7 +103,7 @@ public class SferaMonitoring {
             SferaHelperMethods.setTicketType(ticketCopy.getNumber(), TicketType.TECH_DEBT);
             System.err.println("Ticket " + ticketCopy.getNumber() + " '" + ticket.getName() + "' created");
             SferaHelperMethods.setSprint(ticket.getNumber(), null);
-            SferaHelperMethods.close(ticket.getNumber());
+            SferaHelperMethods.close(ticket);
         }
     }
 
