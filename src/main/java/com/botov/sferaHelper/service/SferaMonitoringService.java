@@ -19,14 +19,16 @@ public class SferaMonitoringService {
         //Задачи под фичей STROMS-5885 (отказ от core-api-gateway) должны быть в проекте 3848
         // Сама фича должна быть открыта, чтобы не забыть поменять её в след. суперспринте
         String feature = "STROMS-5885";
-        String query1 = "area=\"FRNRSA\" and status in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
+        String projectConsumer = "caec6e6b-037e-4016-a0f0-0806b6472047"; // проект 3848
+
+        String query1 = "status not in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
         ListTicketsDto listTicketsDto1 = SferaHelperMethods.listTicketsByQuery(query1);
         if (listTicketsDto1.getContent().size() == 0) {
             System.err.println("Фича по отказу от core-api-gateway должна быть открыта: " + feature);
             return listTicketsDto1.getContent().size();
         }
 
-        String query2 = "area=\"FRNRSA\" and parent='" + feature + "' and projectConsumer != 'caec6e6b-037e-4016-a0f0-0806b6472047'";
+        String query2 = "area=\"FRNRSA\" and parent='" + feature + "' and projectConsumer != '" + projectConsumer + "'";
 
         ListTicketsDto listTicketsDto2 = SferaHelperMethods.listTicketsByQuery(query2);
 
@@ -36,7 +38,32 @@ public class SferaMonitoringService {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
         System.err.println();
-        return listTicketsDto2.getContent().size();
+
+        //Все задачи на Сергее Афанасьеве на проекте 3848 и на фиче по отказу от core-api-gateway
+        String query3 = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb4067243@corp.dev.vtb\") " +
+                "and projectConsumer != '" + projectConsumer + "' " +
+                "and parent='" + feature + "'";
+
+        ListTicketsDto listTicketsDto3 = SferaHelperMethods.listTicketsByQuery(query3);
+        System.err.println("Все задачи на Сергее Афанасьеве на проекте 3848 и на фиче по отказу от core-api-gateway (кол-во " + listTicketsDto3.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto3.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            SferaHelperMethods.setParent(ticket.getNumber(), feature);
+            SferaHelperMethods.setProject(ticket.getNumber(), projectConsumer);
+        }
+
+        //на проекте 3848 не должно быть никого, кроме Афанасьева Сергея
+        String query4 = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee not in (\"vtb4067243@corp.dev.vtb\") " +
+                "and projectConsumer = '" + projectConsumer + "' " +
+                "and parent='" + feature + "'";
+
+        ListTicketsDto listTicketsDto4 = SferaHelperMethods.listTicketsByQuery(query4);
+        System.err.println("На проекте 3848 не должно быть никого, кроме Афанасьева Сергея (кол-во " + listTicketsDto4.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto4.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+
+        return listTicketsDto2.getContent().size() + listTicketsDto3.getContent().size() + listTicketsDto4.getContent().size();
     }
 
     public static int printKzCompleteRDSs() throws IOException {
