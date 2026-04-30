@@ -19,12 +19,12 @@ public class SferaMonitoringPayments {
     public static int errorsCount = 0;
 
     public static void main(String... args) throws IOException {
-        checkRDSLabels();
-        checkRDSPayments();
         checkRDSsStatus();
         checkOverdueRDSs();
-        printOpenProjectRDSs();
+        checkRDSLabels();
         printWaintingForPaymentRDSs();
+        printOpenProjectRDSs();
+        checkRDSPayments();
         printOpenPaymentRDSs();
         printKzCompleteRDSs();
         checkCoreApiEpicAndProjects();
@@ -77,12 +77,15 @@ public class SferaMonitoringPayments {
     private static void printWaintingForPaymentRDSs() throws IOException {
         //РДС-ы лейбла 'WAITING_FOR_PAYMENT'
 
+        int maxDays = 21;
+        String dueDate = LocalDate.now().minusDays(maxDays).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
         String query = "area=\"RDS\" " +
-                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('WAITING_FOR_PAYMENT')";
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('WAITING_FOR_PAYMENT') and createDate < '" + dueDate + "'";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' старше " + maxDays + " (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             errorsCount ++;
@@ -109,7 +112,7 @@ public class SferaMonitoringPayments {
     private static void printOpenPaymentRDSs() throws IOException {
         //РДС-ы лейбла 'PAYMENT' и без KZ_COMPLETE
 
-        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+        String query = "area=\"RDS\" " +
                 "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PAYMENT') and label not in ('KZ_COMPLETE')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
