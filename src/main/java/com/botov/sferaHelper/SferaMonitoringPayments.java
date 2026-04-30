@@ -39,7 +39,7 @@ public class SferaMonitoringPayments {
 
     private static void checkCoreApiEpicAndProjects() throws IOException {
         //Задачи под фичей STROMS-5885 (отказ от core-api-gateway) должны быть в проекте 3848
-        // Сама фича должна быть открыта, чтобы не забыть поменять её в след. спринте
+        // Сама фича должна быть открыта, чтобы не забыть поменять её в след. суперспринте
         String feature = "STROMS-5885";
         String query1 = "area=\"FRNRSA\" and status in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
         ListTicketsDto listTicketsDto1 = SferaHelperMethods.listTicketsByQuery(query1);
