@@ -23,9 +23,9 @@ public class SferaMonitoringPayments {
         checkRDSPayments();
         checkRDSsStatus();
         checkOverdueRDSs();
-        printProjectRDSs();
+        printOpenProjectRDSs();
         printWaintingForPaymentRDSs();
-        printPaymentRDSs();
+        printOpenPaymentRDSs();
         printKzCompleteRDSs();
         checkCoreApiEpicAndProjects();
 
@@ -77,7 +77,7 @@ public class SferaMonitoringPayments {
     private static void printWaintingForPaymentRDSs() throws IOException {
         //РДС-ы лейбла 'WAITING_FOR_PAYMENT'
 
-        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+        String query = "area=\"RDS\" " +
                 "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('WAITING_FOR_PAYMENT')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
@@ -90,7 +90,7 @@ public class SferaMonitoringPayments {
         System.err.println();
     }
 
-    private static void printProjectRDSs() throws IOException {
+    private static void printOpenProjectRDSs() throws IOException {
         //РДС-ы лейбла 'PROJECT'
 
         String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
@@ -98,7 +98,7 @@ public class SferaMonitoringPayments {
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("РДС-ы лейбла 'PROJECT' (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("Открытые РДС-ы лейбла 'PROJECT' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             errorsCount ++;
@@ -106,7 +106,7 @@ public class SferaMonitoringPayments {
         System.err.println();
     }
 
-    private static void printPaymentRDSs() throws IOException {
+    private static void printOpenPaymentRDSs() throws IOException {
         //РДС-ы лейбла 'PAYMENT' и без KZ_COMPLETE
 
         String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
@@ -114,7 +114,7 @@ public class SferaMonitoringPayments {
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("РДС-ы лейбла 'PAYMENT' и без 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("Открытые РДС-ы лейбла 'PAYMENT' и без 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             errorsCount ++;
