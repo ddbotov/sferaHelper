@@ -51,6 +51,7 @@ public class SferaMonitoring {
         errorsCount += SferaMonitoringService.checkMyDoneRDS();
 
         errorsCount += SferaMonitoringService.checkOldTechDept();
+        errorsCount += SferaMonitoringService.checkCoreApiEpicAndProjects();
 
         //checkEpicsWithoutOpenedChildren();
 

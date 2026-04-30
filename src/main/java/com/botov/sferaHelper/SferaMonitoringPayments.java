@@ -19,15 +19,15 @@ public class SferaMonitoringPayments {
 
     public static void main(String... args) throws IOException {
         int errorsCount = 0;
-        errorsCount +=SferaMonitoringService.checkRDSsStatus();
-        errorsCount +=SferaMonitoringService.checkOverdueRDSs();
-        errorsCount +=SferaMonitoringService.checkRDSLabels();
-        errorsCount +=SferaMonitoringService.printWaintingForPaymentRDSs();
-        errorsCount +=SferaMonitoringService.printOpenProjectRDSs();
-        errorsCount +=SferaMonitoringService.checkRDSPayments();
-        errorsCount +=SferaMonitoringService.printOpenPaymentRDSs();
-        errorsCount +=SferaMonitoringService.printKzCompleteRDSs();
-        errorsCount +=SferaMonitoringService.checkCoreApiEpicAndProjects();
+        errorsCount += SferaMonitoringService.checkRDSsStatus();
+        errorsCount += SferaMonitoringService.checkOverdueRDSs();
+        errorsCount += SferaMonitoringService.checkRDSLabels();
+        errorsCount += SferaMonitoringService.printWaintingForPaymentRDSs();
+        errorsCount += SferaMonitoringService.printOpenProjectRDSs();
+        errorsCount += SferaMonitoringService.checkRDSPayments();
+        errorsCount += SferaMonitoringService.printOpenPaymentRDSs();
+        errorsCount += SferaMonitoringService.printKzCompleteRDSs();
+        errorsCount += SferaMonitoringService.checkCoreApiEpicAndProjects();
 
         // Проверить, что у фичи есть трудооценка?
         // глазами смотрим все эпики, фичи и РДС-ы - где есть косяки?
