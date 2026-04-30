@@ -1,10 +1,7 @@
 package com.botov.sferaHelper.service;
 
 import com.botov.sferaHelper.bo.TicketType;
-import com.botov.sferaHelper.dto.GetTicketDto;
-import com.botov.sferaHelper.dto.ListTicketShortDto;
-import com.botov.sferaHelper.dto.ListTicketsDto;
-import com.botov.sferaHelper.dto.TicketCopyResponseDto;
+import com.botov.sferaHelper.dto.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -16,6 +13,149 @@ import java.util.stream.Collectors;
 import static com.botov.sferaHelper.service.SferaService.SFERA_TICKET_START_PATH;
 
 public class SferaMonitoringService {
+
+
+    public static int checkCoreApiEpicAndProjects() throws IOException {
+        //Задачи под фичей STROMS-5885 (отказ от core-api-gateway) должны быть в проекте 3848
+        // Сама фича должна быть открыта, чтобы не забыть поменять её в след. суперспринте
+        String feature = "STROMS-5885";
+        String query1 = "area=\"FRNRSA\" and status in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
+        ListTicketsDto listTicketsDto1 = SferaHelperMethods.listTicketsByQuery(query1);
+        if (listTicketsDto1.getContent().size() == 0) {
+            System.err.println("Фича по отказу от core-api-gateway должна быть открыта: " + feature);
+            return listTicketsDto1.getContent().size();
+        }
+
+        String query2 = "area=\"FRNRSA\" and parent='" + feature + "' and projectConsumer != 'caec6e6b-037e-4016-a0f0-0806b6472047'";
+
+        ListTicketsDto listTicketsDto2 = SferaHelperMethods.listTicketsByQuery(query2);
+
+        System.err.println();
+        System.err.println("Задачи под фичей " + feature + " (отказ от core-api-gateway) должны быть в проекте 3848 (кол-во " + listTicketsDto2.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto2.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto2.getContent().size();
+    }
+
+    public static int printKzCompleteRDSs() throws IOException {
+        //РДС-ы лейбла 'KZ_COMPLETE'
+        String query = "area=\"RDS\" " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('KZ_COMPLETE')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("РДС-ы лейбла 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto.getContent().size();
+    }
+
+    public static int printWaintingForPaymentRDSs() throws IOException {
+        //РДС-ы лейбла 'WAITING_FOR_PAYMENT'
+
+        int maxDays = 21;
+        String dueDate = LocalDate.now().minusDays(maxDays).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        String query = "area=\"RDS\" " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('WAITING_FOR_PAYMENT') and createDate < '" + dueDate + "'";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' старше " + maxDays + " (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto.getContent().size();
+    }
+
+    public static int printOpenProjectRDSs() throws IOException {
+        //РДС-ы лейбла 'PROJECT'
+
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PROJECT')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Открытые РДС-ы лейбла 'PROJECT' (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto.getContent().size();
+    }
+
+    public static int printOpenPaymentRDSs() throws IOException {
+        //РДС-ы лейбла 'PAYMENT' и без KZ_COMPLETE
+
+        String query = "area=\"RDS\" " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PAYMENT') and label not in ('KZ_COMPLETE')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("Открытые РДС-ы лейбла 'PAYMENT' и без 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto.getContent().size();
+    }
+
+    public static int checkRDSLabels() throws IOException {
+        //РДС-ы без лейбла 'FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT'
+
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label not in ('FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("РДС-ы без лейбла 'FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT' (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return listTicketsDto.getContent().size();
+    }
+
+    public static int checkRDSPayments() throws IOException {
+        //РДС-ы с лейблом PAYMENT должны быть привязаны к фиче с трудооценкой
+        String query = "area=\"RDS\" " +
+                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PAYMENT')";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        List<GetTicketDto> rdsWithoutFeatures = new ArrayList<>();
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            GetTicketDto ticketDto = SferaHelperMethods.ticketByNumber(ticket.getNumber());
+
+            List<RelationDto> features = new ArrayList<>();
+            if (ticketDto.getRelations() != null) {
+                for (RelationDto relationDto : ticketDto.getRelations()) {
+                    if (relationDto.getType().equals("rdsImplementation")
+                            && relationDto.getRelatedEntity() != null
+                            && relationDto.getRelatedEntity().getType() != null
+                            && relationDto.getRelatedEntity().getType().getName() != "feature") {
+                        features.add(relationDto);
+                    }
+                }
+            }
+
+            if (features.isEmpty()) {
+                rdsWithoutFeatures.add(ticketDto);
+            }
+        }
+
+        System.err.println();
+        System.err.println("РДС-ы с лейблом PAYMENT без корректной привязки к фиче (кол-во " + rdsWithoutFeatures.size() + "):");
+        for (GetTicketDto ticket: rdsWithoutFeatures) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
+        return rdsWithoutFeatures.size();
+    }
 
     //Не должно быть тех. долгов старше 3-х месяцев, это мониторит Седа (Критерии соответствия степени исполнения процессов производства и сопровождения техн. продуктов)
     // 75 дней - с запасом
