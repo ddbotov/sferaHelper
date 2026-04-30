@@ -5,6 +5,7 @@ import com.botov.sferaHelper.dto.GetTicketDto;
 import com.botov.sferaHelper.dto.ListTicketShortDto;
 import com.botov.sferaHelper.dto.ListTicketsDto;
 import com.botov.sferaHelper.service.SferaHelperMethods;
+import com.botov.sferaHelper.service.SferaMonitoringService;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,7 +34,7 @@ public class SferaHelperTicketTypesFixer {
     public static final long MIN_ESTIMATION_STEP = HOUR;// 1 hour
 
     public static void main(String... args) throws IOException {
-        SferaMonitoring.checkTicketsWithBigEstimation();//"4350", "4351", "4352", "4353", "4354", "4355", "4356"
+        SferaMonitoringService.checkTicketsWithBigEstimation();//"4350", "4351", "4352", "4353", "4354", "4355", "4356"
         String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and sprint = '4365'";//4369
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
