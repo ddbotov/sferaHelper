@@ -140,7 +140,7 @@ public class SferaMonitoringPayments {
 
     private static void checkRDSPayments() throws IOException {
         //РДС-ы с лейблом PAYMENT должны быть привязаны к фиче с трудооценкой
-        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+        String query = "area=\"RDS\" " +
                 "and assignee in (\"vtb70166052@corp.dev.vtb\") and label in ('PAYMENT')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
