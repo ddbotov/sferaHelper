@@ -27,14 +27,36 @@ public class SferaMonitoringPayments {
         printWaintingForPaymentRDSs();
         printPaymentRDSs();
         printKzCompleteRDSs();
+        checkCoreApiEpicAndProjects();
 
         // Проверить, что у фичи есть трудооценка?
         // глазами смотрим все эпики, фичи и РДС-ы - где есть косяки?
         // смотрим КЗ и дашборд по КЗ
 
-        System.err.println("core-api-gateway - должен быть PROJECT ?");
         System.err.println("Было всего 3 PAYMENT , а КЗ намного больше");
         System.err.println("Всего проблем найдено: " + errorsCount);
+    }
+
+    private static void checkCoreApiEpicAndProjects() throws IOException {
+        //Задачи под фичей STROMS-5885 (отказ от core-api-gateway) должны быть в проекте 3848
+        // Сама фича должна быть открыта, чтобы не забыть поменять её в след. спринте
+        String feature = "STROMS-5885";
+        String query1 = "area=\"FRNRSA\" and status in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
+        ListTicketsDto listTicketsDto1 = SferaHelperMethods.listTicketsByQuery(query1);
+        if (listTicketsDto1.getContent().size() == 0) {
+            System.err.println("Фича по отказу от core-api-gateway должна быть открыта: " + feature);
+        }
+
+        String query2 = "area=\"FRNRSA\" and parent='" + feature + "' and projectConsumer != 'caec6e6b-037e-4016-a0f0-0806b6472047'";
+
+        ListTicketsDto listTicketsDto2 = SferaHelperMethods.listTicketsByQuery(query2);
+
+        System.err.println();
+        System.err.println("Задачи под фичей " + feature + " (отказ от core-api-gateway) должны быть в проекте 3848 (кол-во " + listTicketsDto2.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto2.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        System.err.println();
     }
 
     private static void printKzCompleteRDSs() throws IOException {
@@ -47,6 +69,7 @@ public class SferaMonitoringPayments {
         System.err.println("РДС-ы лейбла 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
@@ -62,6 +85,7 @@ public class SferaMonitoringPayments {
         System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
@@ -77,6 +101,7 @@ public class SferaMonitoringPayments {
         System.err.println("РДС-ы лейбла 'PROJECT' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
@@ -92,6 +117,7 @@ public class SferaMonitoringPayments {
         System.err.println("РДС-ы лейбла 'PAYMENT' и без 'KZ_COMPLETE' (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
@@ -105,9 +131,9 @@ public class SferaMonitoringPayments {
 
         System.err.println();
         System.err.println("РДС-ы без лейбла 'FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT' (кол-во " + listTicketsDto.getContent().size() + "):");
-        errorsCount += listTicketsDto.getContent().size();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
@@ -141,9 +167,9 @@ public class SferaMonitoringPayments {
 
         System.err.println();
         System.err.println("РДС-ы с лейблом PAYMENT без корректной привязки к фиче (кол-во " + rdsWithoutFeatures.size() + "):");
-        errorsCount += rdsWithoutFeatures.size();
         for (GetTicketDto ticket: rdsWithoutFeatures) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+            errorsCount ++;
         }
         System.err.println();
     }
