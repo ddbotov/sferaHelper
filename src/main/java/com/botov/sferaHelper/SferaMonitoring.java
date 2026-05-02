@@ -42,6 +42,7 @@ public class SferaMonitoring {
         errorsCount += SferaMonitoringService.checkOnBotovNotMySystemRDSs();
         errorsCount += SferaMonitoringService.checkYellowDeadlineRDSs();
         errorsCount += SferaMonitoringService.checkRedDeadlineRDSs();
+        errorsCount += SferaMonitoringService.checkPossibleRedOrYellowDeadlineRDSs();
         errorsCount += SferaMonitoringService.checkRDSsStatus();
         errorsCount += SferaMonitoringService.checkOverdueFRNRSAs();
         errorsCount += SferaMonitoringService.checkRDSWithOpenQuestions();

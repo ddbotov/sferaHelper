@@ -311,6 +311,21 @@ public class SferaMonitoringService {
         return listTicketsDto.getContent().size();
     }
 
+    public static int checkPossibleRedOrYellowDeadlineRDSs() throws IOException {
+        //"Покрасневшие RDS" c текстом 1553 или 1672_3
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
+                "and (label in ('RED_DEADLINE_MISSED') or label in ('YELLOW_DEADLINE_ALERT') ) " +
+                "and (name ~ \"1672_3\" or name ~ \"1553\") ";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        System.err.println();
+        System.err.println("\"Покрасневшие или пожелтевшие RDS\" c текстом 1553 или 1672_3 (кол-во " + listTicketsDto.getContent().size() + "):");
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        return listTicketsDto.getContent().size();
+    }
+
     public static int checkRedDeadlineRDSs() throws IOException {
         //"Покрасневшие RDS" https://sfera.inno.local/knowledge/pages?id=1675665
         String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
