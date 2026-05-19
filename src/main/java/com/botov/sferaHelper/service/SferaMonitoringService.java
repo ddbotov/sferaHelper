@@ -284,6 +284,8 @@ public class SferaMonitoringService {
                     && !ticket.getNumber().equals("RDS-343447")   // Неправильно заведённый РДС у зарплатных карт
                     && !ticket.getNumber().equals("RDS-351096")   // наш РДС на 2079
                     && !ticket.getNumber().equals("RDS-347480")   // РДС на 2143
+                    && !ticket.getNumber().equals("RDS-368080")   // наш РДС на 2079
+                    && !ticket.getNumber().equals("RDS-368070")   // РДС на 2143
             ){
                 notMyRDSs.add(ticket);
             }
@@ -318,12 +320,19 @@ public class SferaMonitoringService {
                 "and (name ~ \"1672_3\" or name ~ \"1553\") ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
-        System.err.println();
-        System.err.println("\"Покрасневшие или пожелтевшие RDS\" c текстом 1553 или 1672_3 (кол-во " + listTicketsDto.getContent().size() + "):");
+        List<ListTicketShortDto> result = new ArrayList<>();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            if (!ticket.getNumber().equals("RDS-364692")) {
+                result.add(ticket);
+            }
+        }
+
+        System.err.println();
+        System.err.println("\"Покрасневшие или пожелтевшие RDS\" c текстом 1553 или 1672_3 (кол-во " + result.size() + "):");
+        for (ListTicketShortDto ticket: result) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
-        return listTicketsDto.getContent().size();
+        return result.size();
     }
 
     public static int checkRedDeadlineRDSs() throws IOException {
