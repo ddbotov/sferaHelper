@@ -84,7 +84,7 @@ public class SferaMonitoringService {
     public static int printWaintingForPaymentRDSs() throws IOException {
         //РДС-ы лейбла 'WAITING_FOR_PAYMENT'
 
-        int maxDays = 21;
+        int maxDays = 28;
         String dueDate = LocalDate.now().minusDays(maxDays).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         String query = "area=\"RDS\" " +
