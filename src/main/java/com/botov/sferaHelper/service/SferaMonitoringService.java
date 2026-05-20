@@ -424,13 +424,21 @@ public class SferaMonitoringService {
         String query = "area='RDS' and status not in ('closed', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
-        System.err.println();
-        System.err.println("RDS не в статусe \"В очереди\" (кол-во " + listTicketsDto.getContent().size() + "):");
+        List<ListTicketShortDto> result = new ArrayList<>();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
-            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
-            SferaHelperMethods.setStatus(ticket.getNumber(), "onTheQueue");
+            if (!ticket.getNumber().equals("RDS-355494") &&
+                    !ticket.getNumber().equals("RDS-355481") &&
+                    !ticket.getNumber().equals("RDS-355461")) {//консультация по постпроцессорной очереди
+                result.add(ticket);
+            }
         }
-        return listTicketsDto.getContent().size();
+
+        System.err.println();
+        System.err.println("RDS не в статусe \"В очереди\" (кол-во " + result.size() + "):");
+        for (ListTicketShortDto ticket: result) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber() + " \"" + ticket.getName() + "\"");
+        }
+        return result.size();
     }
 
 

@@ -8,8 +8,8 @@ import com.botov.sferaHelper.service.SferaHelperMethods;
 
 public class SferaSprintCloser {
 
-    public static String sprint = "4364";
-    public static String nextSprint = "4365";
+    public static String sprint = "4366";
+    public static String nextSprint = "4367";
 
     public static void main(String... args) throws Exception {
         //Получить список тикетов не в статусе CLOSED
