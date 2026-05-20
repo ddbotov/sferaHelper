@@ -92,7 +92,7 @@ public class SferaMonitoringService {
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
-        System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' старше " + maxDays + " (кол-во " + listTicketsDto.getContent().size() + "):");
+        System.err.println("РДС-ы лейбла 'WAITING_FOR_PAYMENT' старше " + maxDays + " дня (кол-во " + listTicketsDto.getContent().size() + "):");
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
         }
