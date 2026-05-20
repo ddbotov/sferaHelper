@@ -428,7 +428,7 @@ public class SferaMonitoringService {
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             if (!ticket.getNumber().equals("RDS-355494") &&
                     !ticket.getNumber().equals("RDS-355481") &&
-                    !ticket.getNumber().equals("RDS-355461")) {//консультация по постпроцессорной очереди
+                    !ticket.getNumber().equals("RDS-355461")) {//РДС-ы проекта 3556
                 result.add(ticket);
             }
         }
