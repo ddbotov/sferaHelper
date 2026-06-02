@@ -24,6 +24,7 @@ public class SferaMonitoring {
     public static void main(String... args) throws IOException {
         int errorsCount = 0;
         errorsCount += SferaMonitoringService.checkProdBugs();
+        errorsCount += SferaMonitoringService.checkTechDeptIB();
         errorsCount += SferaMonitoringService.checkClosedTicketsWithoutResolution();
         errorsCount += SferaMonitoringService.checkTicketsDone();
         errorsCount += SferaMonitoringService.checkTicketsWithoutEpics();

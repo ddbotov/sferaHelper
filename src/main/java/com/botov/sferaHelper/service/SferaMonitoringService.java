@@ -184,6 +184,30 @@ public class SferaMonitoringService {
         return rdsWithoutFeatures.size();
     }
 
+    public static int checkTechDeptIB() throws IOException {
+        String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup=\"Технический долг\"";
+        List<ListTicketShortDto> content = SferaHelperMethods.listTicketsByQuery(query).getContent();
+        System.err.println();
+
+        List<ListTicketShortDto> result = new ArrayList();
+        for (ListTicketShortDto ticket: content) {
+            GetTicketDto ticketDto = SferaHelperMethods.ticketByNumber(ticket.getNumber());
+
+            if (ticketDto.isTechDebtIB()) {//тех. долг ИБ переоткрывать нельзя
+                result.add(ticket);
+            }
+        }
+
+        System.err.println("Тех. долгов ИБ (кол-во " + result.size() + "):");
+
+
+        for (ListTicketShortDto ticket: result) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        return result.size();
+    }
+
+
     //Не должно быть тех. долгов старше 3-х месяцев, это мониторит Седа (Критерии соответствия степени исполнения процессов производства и сопровождения техн. продуктов)
     // 75 дней - с запасом
     public static int checkOldTechDept() throws IOException {
@@ -322,7 +346,8 @@ public class SferaMonitoringService {
 
         List<ListTicketShortDto> result = new ArrayList<>();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
-            if (!ticket.getNumber().equals("RDS-364692")) {
+            if (!ticket.getNumber().equals("RDS-364692")
+                && !ticket.getNumber().equals("RDS-279211")) {
                 result.add(ticket);
             }
         }
