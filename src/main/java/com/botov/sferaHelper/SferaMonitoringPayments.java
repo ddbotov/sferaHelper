@@ -21,6 +21,8 @@ public class SferaMonitoringPayments {
         int errorsCount = 0;
         errorsCount += SferaMonitoringService.checkRDSsStatus();
         errorsCount += SferaMonitoringService.checkOverdueRDSs();
+        errorsCount += SferaMonitoringService.checkYellowDeadlineRDSs();
+        errorsCount += SferaMonitoringService.checkRedDeadlineRDSs();
         errorsCount += SferaMonitoringService.checkRDSLabels();
         errorsCount += SferaMonitoringService.printWaintingForPaymentRDSs();
         errorsCount += SferaMonitoringService.printOpenProjectRDSs();

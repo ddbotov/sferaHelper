@@ -136,7 +136,7 @@ public class SferaMonitoringService {
         //РДС-ы без лейбла 'FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT'
 
         String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') " +
-                "and assignee in (\"vtb70166052@corp.dev.vtb\") and label not in ('FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT')";
+                "and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4102499@corp.dev.vtb\") and label not in ('FREE', 'PAYMENT', 'PROJECT', 'WAITING_FOR_PAYMENT')";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -324,7 +324,7 @@ public class SferaMonitoringService {
 
     public static int checkYellowDeadlineRDSs() throws IOException {
         //"Пожелтевшие RDS" https://sfera.inno.local/knowledge/pages?id=1675408
-        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4102499@corp.dev.vtb\") " +
                 "and label in ('YELLOW_DEADLINE_ALERT') " +
                 " and (streamExecutor = 'Омниканальный мидл' or streamExecutor = 'Базовые сервисы' or streamExecutor='Омниканальные микросервисные решения' or streamConsumer = 'Омниканальный мидл' or streamConsumer = 'Базовые сервисы' or streamConsumer='Омниканальные микросервисные решения') ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
@@ -362,7 +362,7 @@ public class SferaMonitoringService {
 
     public static int checkRedDeadlineRDSs() throws IOException {
         //"Покрасневшие RDS" https://sfera.inno.local/knowledge/pages?id=1675665
-        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+        String query = "area=\"RDS\" and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4102499@corp.dev.vtb\") " +
                 "and label in ('RED_DEADLINE_MISSED') " +
                 " and (streamExecutor = 'Омниканальный мидл' or streamExecutor = 'Базовые сервисы' or streamExecutor='Омниканальные микросервисные решения' or streamConsumer = 'Омниканальный мидл' or streamConsumer = 'Базовые сервисы' or streamConsumer='Омниканальные микросервисные решения') ";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
