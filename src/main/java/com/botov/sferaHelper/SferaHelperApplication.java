@@ -20,7 +20,7 @@ class SferaHelperApplication {
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
 			//String query = "area=\"FRNRSA\" and updateDate > '2024-09-30'";
 			//String query = "area=\"FRNRSA\" and number='STROMS-5885'";
-			//String query = "area=\"FRNRSA\" and parent='STROMS-5885'";
+			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5885'";
 			//String query =  "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1672_3 Аутентификация подтверждение операций\"";
 
 			//String query =  "area='RDS' and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\") and name ~ '1553'";
@@ -29,7 +29,7 @@ class SferaHelperApplication {
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
 			//String query = "number= 'FRNRSA-8766'";
 
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent = null";
+			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent = null";
 
 			//String query = "area=\"FRNRSA\" and sprint = '4357'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb4067243@corp.dev.vtb\")"; // Сергей Афанасьев
@@ -51,7 +51,7 @@ class SferaHelperApplication {
 
 
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1672_3 Аутентификация подтверждение операций");
-				SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-5887");
+				SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-6439");
 				//SferaHelperMethods.setProject(ticket.getNumber(), "caec6e6b-037e-4016-a0f0-0806b6472047");// проект 3848
 				//SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L);
 				//SferaHelperMethods.setDueDate(ticket.getNumber(), "2026-04-07");

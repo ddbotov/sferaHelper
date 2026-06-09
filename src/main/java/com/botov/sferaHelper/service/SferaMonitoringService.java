@@ -347,7 +347,9 @@ public class SferaMonitoringService {
         List<ListTicketShortDto> result = new ArrayList<>();
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             if (!ticket.getNumber().equals("RDS-364692")
-                && !ticket.getNumber().equals("RDS-279211")) {
+                && !ticket.getNumber().equals("RDS-279211")
+                && !ticket.getNumber().equals("RDS-377117")
+                && !ticket.getNumber().equals("RDS-377113")){
                 result.add(ticket);
             }
         }
