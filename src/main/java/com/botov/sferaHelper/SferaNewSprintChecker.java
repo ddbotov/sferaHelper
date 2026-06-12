@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.util.*;
 
 //выравнивает типа тикетов по квоте italonTicketTypesMap
-public class SferaHelperTicketTypesFixer {
+public class SferaNewSprintChecker {
+
+    public static final long SPRINT_COMMAND_DAYS = 70;// 70 days
 
     private static final HashMap<TicketType, Long> italonTicketTypesMap = new HashMap<>();
     static {
@@ -137,6 +139,7 @@ public class SferaHelperTicketTypesFixer {
         }
         printFullTicketsMap(fullTicketsMap);
 
+        System.out.println("fullEstimation = " + (fullEstimation/DAY) + "; SPRINT_COMMAND_DAYS = " + SPRINT_COMMAND_DAYS);
     }
 
     private static void printFullTicketsMap(HashMap<TicketType, List<GetTicketDto>> fullTicketsMap) {

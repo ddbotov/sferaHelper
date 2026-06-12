@@ -11,10 +11,10 @@ import java.io.IOException;
 //копирует одинаковые задачи в несколько спринтов sprints
 class SferaHelperTicketCopier {
 		public static void main(String... args) throws IOException {
-			String[] sprints = new String[] {"4363", "4364", "4365", "4366", "4367", "4368", "4369"};
-			String[] ticketNumbers = new String[] {"FRNRSA-10952", "FRNRSA-9965", "FRNRSA-10450", "FRNRSA-9979", "FRNRSA-9972", "FRNRSA-9481",
-			"FRNRSA-9488", "FRNRSA-9495", "FRNRSA-10955", "FRNRSA-10009", "FRNRSA-9502", "FRNRSA-10954", "FRNRSA-9509",
-			"FRNRSA-10023", "FRNRSA-9516", "FRNRSA-10037", "FRNRSA-10030", "FRNRSA-10953"};
+			String[] sprints = new String[] {"4370", "4371", "4372", "4373", "4374", "4375", "4376"};
+			String[] ticketNumbers = new String[] {"FRNRSA-11104", "FRNRSA-11973", "FRNRSA-10730", "FRNRSA-11972", "FRNRSA-11945", "FRNRSA-11121",
+			"FRNRSA-11115", "FRNRSA-10471", "FRNRSA-10477", "FRNRSA-11971", "FRNRSA-10483", "FRNRSA-11133", "FRNRSA-10489",
+			"FRNRSA-11970", "FRNRSA-10495", "FRNRSA-11300", "FRNRSA-11969", "FRNRSA-11145", "FRNRSA-10501", "FRNRSA-11968", "FRNRSA-11153"};
 
 			for (String ticketNumber : ticketNumbers) {
 				GetTicketDto ticket = SferaHelperMethods.ticketByNumber(ticketNumber);
