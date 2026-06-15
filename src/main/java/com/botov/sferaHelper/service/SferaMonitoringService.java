@@ -211,10 +211,10 @@ public class SferaMonitoringService {
     //Не должно быть тех. долгов старше 3-х месяцев, это мониторит Седа (Критерии соответствия степени исполнения процессов производства и сопровождения техн. продуктов)
     // 75 дней - с запасом
     public static int checkOldTechDept() throws IOException {
-        String minCreateDate = LocalDate.now().minusDays(75).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String minCreateDate = LocalDate.now().minusDays(70).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and workGroup=\"Технический долг\" " +
-                "and type='task' and hasPlannedSprint() " +
+                "and type='task' " +
                 "and createDate < '" + minCreateDate + "'";
         List<ListTicketShortDto> content = SferaHelperMethods.listTicketsByQuery(query).getContent();
         // тех. долги по Арх сертам переоткрывать нельзя, на них ссылки идут из Сфера конфигурации

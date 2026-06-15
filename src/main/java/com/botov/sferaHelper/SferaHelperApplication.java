@@ -10,6 +10,7 @@ import java.util.Collections;
 //делает произвольные простые изменения в Сфере
 class SferaHelperApplication {
 		public static void main(String... args) throws IOException {
+			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and name ~ \"Арх серт\"";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent=null";
@@ -20,7 +21,7 @@ class SferaHelperApplication {
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
 			//String query = "area=\"FRNRSA\" and updateDate > '2024-09-30'";
 			//String query = "area=\"FRNRSA\" and number='STROMS-5885'";
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5885'";
+			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent='STROMS-5885'";
 			//String query =  "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = \"1672_3 Аутентификация подтверждение операций\"";
 
 			//String query =  "area='RDS' and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\") and name ~ '1553'";
@@ -51,7 +52,7 @@ class SferaHelperApplication {
 
 
 				//SferaHelperMethods.setSystem(ticket.getNumber(), "1672_3 Аутентификация подтверждение операций");
-				SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-6439");
+				//SferaHelperMethods.setParent(ticket.getNumber(), "STROMS-6439");
 				//SferaHelperMethods.setProject(ticket.getNumber(), "caec6e6b-037e-4016-a0f0-0806b6472047");// проект 3848
 				//SferaHelperMethods.setEstimation(ticket.getNumber(), 3600L);
 				//SferaHelperMethods.setDueDate(ticket.getNumber(), "2026-04-07");
@@ -65,12 +66,14 @@ class SferaHelperApplication {
 
 			//	SferaHelperMethods.setResolution(ticket.getNumber(), "Готово");
 
-/*				PatchTicketDto patch = new PatchTicketDto();
+				PatchTicketDto patch = new PatchTicketDto();
 				patch.setWorkGroup("Архитектурная задача");
 				patch.setArchTaskReason("Надежность и Производительность");//
 				patch.setReliabilityPattern(Collections.singleton("НА.ПН.02 - Stand In"));
-				SferaHelperMethods.patchTicket2(ticket.getNumber(), patch);*/
+				SferaHelperMethods.patchTicket2(ticket.getNumber(), patch);
 
+
+				SferaHelperMethods.setSprint(ticket.getNumber(), "4376");
 
 /*				SferaHelperMethods.setSprint(ticket.getNumber(), null);
 				PatchTicketDto ticketDto = new PatchTicketDto();

@@ -75,6 +75,9 @@ public enum TicketType {
         if (ticket.getType().getName().equals("Дефект")) {
             return DEFECT;
         }
+        if (ticket.getType().getName().equals("История")) {
+            return OTHER;
+        }
         if (ticket.getWorkGroup().getName().equals("Новая функциональность")) {
             if ((ticket.getNewFunctionalityReasons() != null)
                     && ("Долг клиентского опыта".equals(ticket.getNewFunctionalityReasons().getIdentifier()))) {
@@ -111,6 +114,10 @@ public enum TicketType {
         }
 
         if (ticket.isTechDebtIB()) {
+            return false;
+        }
+
+        if (ticket.getName().contains("Арх серт")) {
             return false;
         }
         return true;
