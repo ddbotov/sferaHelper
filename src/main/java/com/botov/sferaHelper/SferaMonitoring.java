@@ -55,6 +55,8 @@ public class SferaMonitoring {
         errorsCount += SferaMonitoringService.checkOldTechDept();
         errorsCount += SferaMonitoringService.checkCoreApiEpicAndProjects();
 
+
+        errorsCount += SferaMonitoringService.checkFeatures();
         //checkEpicsWithoutOpenedChildren();
 
         //Выводить в конце итогое кол-во проблем?

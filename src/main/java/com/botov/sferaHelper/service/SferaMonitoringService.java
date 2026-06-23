@@ -478,8 +478,8 @@ public class SferaMonitoringService {
     }
 
     public static int checkOverdue(String area, String filter) throws IOException {
-        //просроченные РДСы
-        String dueDate = LocalDate.now().plusDays(60).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        //просроченные задачи
+        String dueDate = LocalDate.now().plusDays(30).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String query = "area='" + area + "' and status not in ('closed', 'rejectedByThePerformer') and " +
                 "((dueDate = null) or (dueDate < '"
                 + dueDate +
@@ -491,7 +491,7 @@ public class SferaMonitoringService {
 
         System.err.println();
         System.err.println("просроченные " + area + " (кол-во " + listTicketsDto.getContent().size() + "):");
-        String newDueDate = LocalDate.now().plusDays(60).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String newDueDate = LocalDate.now().plusDays(90).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
             System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
             SferaHelperMethods.setDueDate(ticket.getNumber(), newDueDate);
@@ -687,4 +687,62 @@ public class SferaMonitoringService {
         return listTicketsDto.getContent().size();
     }
 
+
+    //новые эпики на мне??
+    //найти эпики без фичей
+    //найти фичи без подзадач
+    //найти фичи без сторей
+    //найти эпики без суперспринта и срока
+    //найти фичи без суперспринта и срока
+    //найти все мои STROMS со связями "Склонирован"
+
+    //выполненные задачи, но не закрытые
+    public static int checkFeatures() throws IOException {
+        String query = "area=\"STROMS\" and status not in ('closed',  'rejected', 'rejectedByThePerformer') and type='feature' and assignee in (\"vtb70166052@corp.dev.vtb\")";
+        ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
+
+        //найти фичи без эпиков
+        List<ListTicketShortDto> featuresWithoutEpics = new ArrayList<>();
+        List<ListTicketShortDto> featuresWithNotSameNamesAsEpics = new ArrayList<>();
+        List<ListTicketShortDto> featuresWithNotSameEstimationsAsEpics = new ArrayList<>();
+        for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
+            if (ticket.getParent() == null) {
+                featuresWithoutEpics.add(ticket);
+            } else {
+                GetTicketDto parent = SferaHelperMethods.ticketByNumber(ticket.getParent());
+                if (parent.getAssignee().getIdentifier().equals("vtb70166052@corp.dev.vtb")) {//если не на Ботове - значит общестримовой эпик
+                    if (!parent.getName().equals(ticket.getName())) {
+                        featuresWithNotSameNamesAsEpics.add(ticket);
+                    }
+                    if (parent.getEstimation() == null || !parent.getEstimation().equals(ticket.getEstimation())) {
+                        featuresWithNotSameEstimationsAsEpics.add(ticket);
+                    }
+                }
+            }
+        }
+
+        int errorsCount = 0;
+
+        System.err.println();
+        System.err.println("Фичи без эпиков (кол-во " + featuresWithoutEpics.size() + "):");
+        errorsCount += featuresWithoutEpics.size();
+        for (ListTicketShortDto ticket: featuresWithoutEpics) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+
+        System.err.println();
+        System.err.println("Фичи не соответствуют именем с эпиком (кол-во " + featuresWithNotSameNamesAsEpics.size() + "):");
+        errorsCount += featuresWithNotSameNamesAsEpics.size();
+        for (ListTicketShortDto ticket: featuresWithNotSameNamesAsEpics) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+
+        System.err.println();
+        System.err.println("Фичи не соответствуют трудооценкой с эпиком (кол-во " + featuresWithNotSameEstimationsAsEpics.size() + "):");
+        errorsCount += featuresWithNotSameEstimationsAsEpics.size();
+        for (ListTicketShortDto ticket: featuresWithNotSameEstimationsAsEpics) {
+            System.err.println(SFERA_TICKET_START_PATH + ticket.getNumber());
+        }
+        return errorsCount;
+    }
 }
