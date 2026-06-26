@@ -18,7 +18,7 @@ public class SferaMonitoringService {
     public static int checkCoreApiEpicAndProjects() throws IOException {
         //Задачи под фичей STROMS-5885 (отказ от core-api-gateway) должны быть в проекте 3848
         // Сама фича должна быть открыта, чтобы не забыть поменять её в след. суперспринте
-        String feature = "STROMS-5885";
+        String feature = "STROMS-6439";
         String projectConsumer = "caec6e6b-037e-4016-a0f0-0806b6472047"; // проект 3848
 
         String query1 = "status not in ('closed', 'done', 'rejectedByThePerformer') and number='" + feature + "'";
@@ -435,7 +435,7 @@ public class SferaMonitoringService {
 
     public static int checkRDSWithOpenQuestions() throws IOException {
         //RDS с открытыми вопросами
-        String query = "area='RDS' and openQuestion = 'открытый вопрос' and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
+        String query = "area='RDS' and openQuestion = 'открытый вопрос' and status not in ('closed', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         System.err.println();
@@ -448,7 +448,7 @@ public class SferaMonitoringService {
 
     public static int checkRDSsStatus() throws IOException {
         //RDS не в статусe "В очереди"
-        String query = "area='RDS' and status not in ('closed', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")";
+        String query = "area='RDS' and status not in ('closed', 'rejectedByThePerformer', 'onTheQueue') and assignee in (\"vtb70166052@corp.dev.vtb\")";
         ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 
         List<ListTicketShortDto> result = new ArrayList<>();
@@ -470,7 +470,7 @@ public class SferaMonitoringService {
 
 
     public static int checkOverdueRDSs() throws IOException {
-        return checkOverdue("RDS", "assignee in (\"vtb70166052@corp.dev.vtb\", \"vtb4065673@corp.dev.vtb\", \"vtb70190852@corp.dev.vtb\", \"vtb4075541@corp.dev.vtb\", \"vtb4078565@corp.dev.vtb\", \"VTB4075541@corp.dev.vtb\")");
+        return checkOverdue("RDS", "assignee in (\"vtb70166052@corp.dev.vtb\")");
     }
 
     public static int checkOverdueFRNRSAs() throws IOException {
