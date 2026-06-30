@@ -10,7 +10,7 @@ import java.util.Collections;
 //делает произвольные простые изменения в Сфере
 class SferaHelperApplication {
 		public static void main(String... args) throws IOException {
-			String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and name ~ \"Арх серт\"";
+			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and name ~ \"Арх серт\"";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'rejectedByThePerformer') and projectConsumer != '4b4c6fcc-7125-41ca-a014-02014a5c800c'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and estimation>" + (3600L * 8 * 4) ;
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent=null";
@@ -28,7 +28,7 @@ class SferaHelperApplication {
 			//String query = "area=\"EKA\" and status not in ('closed') and sprint in (4350,4351,4352,4353,4354,4355) and projectConsumer='db27d591-cbd3-4fcd-a7b6-d64d0cd11a3b'";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and systems = null";
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer')";
-			//String query = "number= 'FRNRSA-8766'";
+			String query = "number= 'STROMS-5858'";
 
 			//String query = "area=\"FRNRSA\" and status not in ('closed', 'done', 'rejectedByThePerformer') and parent = null";
 
@@ -39,6 +39,9 @@ class SferaHelperApplication {
 			//String sprint = "4358";
 
 			//String query =  "area='RDS' and status not in ('closed', 'done', 'rejectedByThePerformer') (\"vtb70166052@corp.dev.vtb\")";
+/*
+			String query = "area=\"STROMS\" and status not in ('closed', 'done', 'rejectedByThePerformer') and assignee in (\"vtb70166052@corp.dev.vtb\") " +
+					"and projectConsumer='af03c3bb-ba9a-44c0-9c51-74b6723903ae'";//project 4087*/
 
 			ListTicketsDto listTicketsDto = SferaHelperMethods.listTicketsByQuery(query);
 			for (ListTicketShortDto ticket: listTicketsDto.getContent()) {
@@ -65,7 +68,7 @@ class SferaHelperApplication {
 				//SferaHelperMethods.setSprint(ticket.getNumber(), null);
 
 			//	SferaHelperMethods.setResolution(ticket.getNumber(), "Готово");
-
+/*
 				PatchTicketDto patch = new PatchTicketDto();
 				patch.setWorkGroup("Архитектурная задача");
 				patch.setArchTaskReason("Надежность и Производительность");//
@@ -73,13 +76,13 @@ class SferaHelperApplication {
 				SferaHelperMethods.patchTicket2(ticket.getNumber(), patch);
 
 
-				SferaHelperMethods.setSprint(ticket.getNumber(), "4376");
+				SferaHelperMethods.setSprint(ticket.getNumber(), "4376");*/
 
-/*				SferaHelperMethods.setSprint(ticket.getNumber(), null);
+				//SferaHelperMethods.setSprint(ticket.getNumber(), null);
 				PatchTicketDto ticketDto = new PatchTicketDto();
 				ticketDto.setStatus("closed");
 				ticketDto.setResolution("Готово");
-				SferaHelperMethods.patchTicket2(ticket.getNumber(), ticketDto);*/
+				SferaHelperMethods.patchTicket2(ticket.getNumber(), ticketDto);
 
 
 				//SferaHelperMethods.close(ticket);
